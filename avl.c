@@ -7,42 +7,45 @@
 #include <stdlib.h>
 #endif
 
+#ifndef STDIO_H
+#define STDIO_H
+#include <stdio.h>
+#endif
+
 void insert_node(struct node** root, int cod_cliente, int op, int v)
 {
-	struct node* existing_node = find_node(*root, cod_cliente);
 
-	if (root == NULL) {
+	if (!root) { 	// no atual eh nulo - criar
 		*root = (struct node*) malloc(sizeof(struct node));
 
-		if (*root == NULL) {
+		if (!(*root)) {
 			fprintf(stderr, "Out of memory");
 			exit(1);
-		} else {
-			(*root)->up = NULL;
+		} else
+			(*root)->cod_cliente = cod_cliente;
+	} else { 	// arvore nao nula. tenta encontrar no existente
+		//struct node* existing_node = find_node(*root, cod_cliente);
+
+		if (cod_cliente == (*root)->cod_cliente) {
+			// aplica operacao 'op' apenas
+		} else if (cod_cliente < (*root)->cod_cliente) {
+			(*root)->left = insert_node(&(*root)->left, cod_cliente, op, v);
+			if (balance_factor(*root) == 2) rotate_left(root) else 
+		} else if (cod_cliente > (*root)->cod_cliente) {
+	
 		}
 	}
-		
 }
 
 struct node* find_node(struct node* root, int cod_cliente)
 {
-	if (root == NULL || root->value == cod_cliente)
+	if (!root || root->cod_cliente == cod_cliente)
 		return root;
-	else if (cod_cliente <= root->value)
+	else if (cod_cliente <= root->cod_cliente)
 		return find_node(root->left, cod_cliente);
 	else
 		return find_node(root->right, cod_cliente);
 }
-
-/*
-void post_order(struct node* node)
-{
-	if (node == NULL) return;
-	post_order(node->right);
-	printf("%d", node->cod_cliente);
-	post_order(node->left);
-}
-*/
 
 void print_level(struct node* root, int target_level)
 {
@@ -51,14 +54,14 @@ void print_level(struct node* root, int target_level)
 
 void print_level_aux(struct node* n, int target_level, int current_level)
 {
-	if (root == NULL) return;
+	if (!n) return;
 
 	if (current_level == target_level)
 		printf("%d ", n->cod_cliente); // imprime apenas o nivel pedido
 	else if (current_level < target_level) {
 		int next_level = ++current_level;
-		print_level(n->left, target_level, next_level);
-		print_level(n->right, target_level, next_level); 
+		print_level_aux(n->left, target_level, next_level);
+		print_level_aux(n->right, target_level, next_level); 
 	}
 
 	return;
@@ -66,14 +69,33 @@ void print_level_aux(struct node* n, int target_level, int current_level)
 
 void in_order(struct node* node)
 {
-	if (node == NULL) return;
+	if (!node) return;
 	in_order(node->left);
 	printf("%d", node->cod_cliente);
 	in_order(node->right);
 }
 
-int height(struct node* node)
+int height(struct node* n)
 {
-	return node == NULL ? 0 : 1 + height(node->up);
+	return !n ? 0 : 1 + height(n->up);
+}
+
+int balance_factor(struct node* n) // como visto em sala
+{
+	return height(n->right) - height(n->left);
+}
+
+void balance(struct node** n)
+{
+	if (balance_factor(*n) == 2) {
+		return;
+	}
+}
+
+void dispose(struct node** n)
+{
+	dispose(&(*n)->left);
+	dispose(&(*n)->right);
+	free(*n);
 }
 
