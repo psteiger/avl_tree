@@ -20,7 +20,8 @@
 #endif
 
 int main(void) {
-    struct node* tree = NULL;
+    node *tree;
+
     printf("Inserindo 3\n");
     insert_node(&tree, 3, 'c', 100);
 
