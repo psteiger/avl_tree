@@ -1,1 +1,0 @@
-gcc -Wall -Wextra -Werror -Wpedantic   -c -o avl.o avl.c

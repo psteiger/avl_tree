@@ -1,6 +1,6 @@
 typedef struct node node;
 
-void insert_node(node** root, int cod_cliente, int op, int v);
+node* insert_node(node** root, int cod_cliente, int op, int v);
 void remove_node(node** n, int cod_cliente);
 node* find_node(node* root, int cod_cliente);
 void print_tree(node* root, char c); 	/* order = 'c' ou 'd' */

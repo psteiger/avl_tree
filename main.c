@@ -20,10 +20,10 @@
 #endif
 
 int main(void) {
-    node *tree;
+    node *tree = NULL;
 
     printf("Inserindo 3\n");
-    insert_node(&tree, 3, 'c', 100);
+    tree = insert_node(&tree, 3, 'c', 100);
 
     print_level(tree, 1);
     print_level(tree, 2);
@@ -33,7 +33,7 @@ int main(void) {
     /*printf("%d", tree->saldo);*/
     printf("Inserindo 4\n");
 
-    insert_node(&tree, 4, 'c', 100);
+    tree = insert_node(&tree, 4, 'c', 100);
 
     print_level(tree, 1);
     print_level(tree, 2);
@@ -42,15 +42,55 @@ int main(void) {
 
     printf("Inserindo 5\n");
 
-    insert_node(&tree, 5, 'c', 100);
-    /*insert_node(&tree, 6, 'c', 100);
-    insert_node(&tree, 1, 'c', 100);
-    insert_node(&tree, 2, 'c', 100);
-    insert_node(&tree, 1, 'c', 100);*/
+    tree = insert_node(&tree, 5, 'c', 100);
 
     print_level(tree, 1);
     print_level(tree, 2);
     print_level(tree, 3);
     print_level(tree, 4);
+
+    tree = insert_node(&tree, 6, 'c', 100);
+
+    print_level(tree, 1);
+    print_level(tree, 2);
+    print_level(tree, 3);
+    print_level(tree, 4);
+
+    tree = insert_node(&tree, 7, 'c', 100);
+
+    print_level(tree, 1);
+    print_level(tree, 2);
+    print_level(tree, 3);
+    print_level(tree, 4);
+
+    tree = insert_node(&tree, 8, 'c', 100);
+
+    print_level(tree, 1);
+    print_level(tree, 2);
+    print_level(tree, 3);
+    print_level(tree, 4);
+
+    tree = insert_node(&tree, 2, 'c', 100);
+
+    print_level(tree, 1);
+    print_level(tree, 2);
+    print_level(tree, 3);
+    print_level(tree, 4);
+    tree = insert_node(&tree, 1, 'c', 100);
+
+    print_level(tree, 1);
+    print_level(tree, 2);
+    print_level(tree, 3);
+    print_level(tree, 4);
+    print_level(tree, 5);
+    print_level(tree, 6);
+    tree = insert_node(&tree, 0, 'c', 100);
+
+    print_level(tree, 1);
+    print_level(tree, 2);
+    print_level(tree, 3);
+    print_level(tree, 4);
+    print_level(tree, 5);
+    print_level(tree, 6);
     return 0;
 }
