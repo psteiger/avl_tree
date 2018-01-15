@@ -1,8 +1,8 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -Wpedantic -g
-LDFLAGS = 
-OBJFILES = avl.o main.o
-TARGET = simulacao
+CC=gcc
+CFLAGS=-Wall -Wextra -Werror -Wpedantic
+LDFLAGS= 
+OBJFILES=avl.o main.o
+TARGET=simulacao
 
 all: $(TARGET)
 

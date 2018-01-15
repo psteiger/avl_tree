@@ -19,78 +19,98 @@
 
 #endif
 
+#define MAX_ARGS 3
+
+char* readstr(void);
+int strlength(char* input);
+
 int main(void) {
+    /* a estrutura principal - uma arvore AVL */
     node *tree = NULL;
 
-    printf("Inserindo 3\n");
-    tree = insert_node(&tree, 3, 'c', 100);
+    /* le stdin em loop */
+    char *c, word[100];
+    int args[MAX_ARGS]; /* para insercao */
+    int arg_count = 0;
+    int last_space_pos = 0;
+    int i;
+    do {
+        c = readstr();
 
-    print_level(tree, 1);
-    print_level(tree, 2);
-    print_level(tree, 3);
-    print_level(tree, 4);
+        /* extrai os parametros da string lida */
+        for (i = 0; i <= strlength(c); i++) {
+            word[i-last_space_pos] = c[i];
+            if (c[i] == ' ' || c[i] == '\0') {
+                if (arg_count == MAX_ARGS) break;
+                word[i-last_space_pos] = '\0';
+                last_space_pos = i+1;
+                if (i > 1) args[arg_count++] = atoi(word);
+            }
+        }
 
-    /*printf("%d", tree->saldo);*/
-    printf("Inserindo 4\n");
+        last_space_pos = 0;
+        arg_count = 0;
 
-    tree = insert_node(&tree, 4, 'c', 100);
+        /* realiza operacao definida por c[0] */
+        switch(c[0]) {
+        case 'i':
+            tree = insert_node(&tree, args[0], args[1], args[2]);
+            break;
+        case 'r':
+            tree = remove_node(&tree, args[0]   );
+            break;
+        case 'c':
+            print_node(tree, args[0]);
+            break;
+        case 'p':
+            if (c[2] == 'c') 
+                in_order(tree);
+            else if(c[2] == 'd')
+                reverse_in_order(tree);
+        case 'n':
+            print_level(tree, args[0]);
+            break;
+        case 'h':
+            print_height(tree);
+            break;
+        }
+    } while(c[0] != 'f');
 
-    print_level(tree, 1);
-    print_level(tree, 2);
-    print_level(tree, 3);
-    print_level(tree, 4);
-
-    printf("Inserindo 5\n");
-
-    tree = insert_node(&tree, 5, 'c', 100);
-
-    print_level(tree, 1);
-    print_level(tree, 2);
-    print_level(tree, 3);
-    print_level(tree, 4);
-
-    tree = insert_node(&tree, 6, 'c', 100);
-
-    print_level(tree, 1);
-    print_level(tree, 2);
-    print_level(tree, 3);
-    print_level(tree, 4);
-
-    tree = insert_node(&tree, 7, 'c', 100);
-
-    print_level(tree, 1);
-    print_level(tree, 2);
-    print_level(tree, 3);
-    print_level(tree, 4);
-
-    tree = insert_node(&tree, 8, 'c', 100);
-
-    print_level(tree, 1);
-    print_level(tree, 2);
-    print_level(tree, 3);
-    print_level(tree, 4);
-
-    tree = insert_node(&tree, 2, 'c', 100);
-
-    print_level(tree, 1);
-    print_level(tree, 2);
-    print_level(tree, 3);
-    print_level(tree, 4);
-    tree = insert_node(&tree, 1, 'c', 100);
-
-    print_level(tree, 1);
-    print_level(tree, 2);
-    print_level(tree, 3);
-    print_level(tree, 4);
-    print_level(tree, 5);
-    print_level(tree, 6);
-    tree = insert_node(&tree, 0, 'c', 100);
-
-    print_level(tree, 1);
-    print_level(tree, 2);
-    print_level(tree, 3);
-    print_level(tree, 4);
-    print_level(tree, 5);
-    print_level(tree, 6);
+    print_and_dispose_tree(&tree);
     return 0;
+}
+
+char* readstr(void)
+{
+    int buffer_size = 8;
+    int i = 0;
+    int input;
+    char *string = NULL;
+
+    string = calloc(buffer_size, sizeof(char));
+
+    while ((input = getchar()) != EOF) {
+        if (input == '\r' || input == '\n') {
+            fflush(stdin);
+            break;
+        }
+
+        if (i == buffer_size - 1) {
+            buffer_size *= 2;
+            string = realloc( string, buffer_size * sizeof(char) );
+        }
+
+        string[i++] = input;
+        string[i] = '\0';
+    }
+
+    return string;
+}
+
+int strlength(char *input)
+{
+    int length = 0;
+    while (input[length] != '\0')
+        length++;
+    return length;
 }
